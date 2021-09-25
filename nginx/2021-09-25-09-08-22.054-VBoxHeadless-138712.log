@@ -1,0 +1,12 @@
+Log created: 2021-09-25T09:08:22.540267000Z
+Process ID:  138712 (0x21dd8)
+Parent PID:  1 (0x1)
+Executable:  /usr/lib/virtualbox/VBoxHeadless
+Arg[0]: /usr/lib/virtualbox/VBoxHeadless
+Arg[1]: --comment
+Arg[2]: nginx_lb1_1632560320407_6418
+Arg[3]: --startvm
+Arg[4]: 907b622c-9ecf-41f2-af8b-41b1f1d68f65
+Arg[5]: --vrde
+Arg[6]: config
+AddRef: illegal refcnt=3221225469 state=2

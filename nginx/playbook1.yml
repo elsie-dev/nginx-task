@@ -1,0 +1,81 @@
+# - hosts: all
+#   become: yes
+#   become_method: sudo
+#   tasks:
+#   - name: update
+#     command: sudo apt-get update
+
+#   - name: install packages
+#     apt:
+#       name: ['nginx', python3-pip] 
+#       state: present
+
+# # Install the app, note: don't do these tasks with become sudo
+# - hosts: all
+#   tasks:
+#   - name: clone repo
+#     git:
+#       repo: 'https://github.com/elsie-dev/Flask-webapp.git'
+#       dest: ~/Flask-webapp
+#       update: yes  # Does a git pull if the repo already exists 
+
+#   - name: "commands to activate env"
+#     command: sudo apt-get update  
+
+  # - name: "reinstall python3-pip"
+  #   command:  sudo apt-get install -y python3-pip
+
+- hosts: default
+  tasks:
+  - name: install modules in a requirements
+    pip:
+      requirements: /home/vagrant/Flask-webapp/requirements.txt
+      virtualenv: /home/vagrant/Flask-webapp/env
+      virtualenv_python: python3.6.9
+
+      
+
+# Configure app systemd service and nginx
+# - hosts: default
+#   become: yes
+#   tasks:
+#   - name: template systemd service config
+#     copy:
+#       src: .~/Flask-webapp/.service
+#       dest: /etc/systemd/system/Flask-webapp.service
+
+#   - name: start systemd app service
+#     systemd: name=Flask-webapp.service state=restarted enabled=yes
+#   - name: template nginx site config
+#     template:
+#       src: .nginx
+#       dest: /etc/nginx/sites-available/Flask-webapp
+  # - name: remove default nginx site config
+  #   file: path=/etc/nginx/sites-enabled/default state=absent
+  # - command: mv /etc/nginx/sites-enabled/default /tmp/nginx.sites-enabled.default
+#   - name: enable nginx site
+#     file:
+#       src: /etc/nginx/sites-available/{{ app_name }}
+#       dest: /etc/nginx/sites-enabled/default
+#       state: link
+#       force: yes
+#   - name: restart nginx
+#     systemd: name=nginx state=restarted enabled=yes
+#   - name: open firewall for nginx
+#     ufw:
+#       rule: allow
+#       name: Nginx Full
+
+# # Run a quick test to verify the site is working
+# - hosts: webservers
+#   tasks:
+#   - name: get url
+#     get_url:
+#       url: http://{{inventory_hostname}}
+#       dest: /tmp/index.html
+#   - name: read html
+#     shell: cat /tmp/index.html
+#     register: html_contents
+#   - name: check for string in html
+#     when: html_contents.stdout.find('hello') != -1
+#     debug: msg="success!"

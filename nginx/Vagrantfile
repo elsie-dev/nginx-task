@@ -1,0 +1,30 @@
+Vagrant.configure("2") do |config|
+  config.vm.define "lb1" do |lb1|
+    lb1.vm.box="ubuntu/bionic64"
+    lb1.vm.network "private_network", ip: "10.0.0.10"
+    lb1.vm.provision "shell", path: "https://gist.githubusercontent.com/elsie-dev/ae8bf2c22fa1b343e4ade5af3fcd5dae/raw/d2c6e6b3f12ca304b17b80f4fb62b450fa7c31cc/provision-lb.sh"
+    end
+
+  config.vm.define "web1" do |web1|
+    web1.vm.box = "ubuntu/bionic64"
+    web1.vm.network "private_network", ip:"10.0.0.11"
+    web1.vm.provision "shell" do |shell|
+      shell.args = "Webserver 1"
+      shell.path="https://gist.githubusercontent.com/elsie-dev/34a4e47ee02c07a4a3f34bdb3040a21c/raw/dacc04b4cc2412c45dedefa8ffec0120cd72fb6b/provision-web.sh"
+    end 
+  end  
+  
+  config.vm.define "web2" do |web2|
+    web2.vm.box = "ubuntu/bionic64"
+    web2.vm.network "private_network", ip:"10.0.0.12"
+    web2.vm.provision "shell" do |shell|
+      shell.args = "Webserver 2"
+      shell.path="https://gist.githubusercontent.com/elsie-dev/34a4e47ee02c07a4a3f34bdb3040a21c/raw/dacc04b4cc2412c45dedefa8ffec0120cd72fb6b/provision-web.sh"
+    end
+  end
+end
+
+  #Example using ansible ansible is way better, but its also bull shit when it comes to error logging
+  # config.vm.provision "ansible" do |ansible|
+  #   ansible.playbook = "playbook1.yml"
+  #   ansible.verbose = true
